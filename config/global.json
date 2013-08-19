@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "GithubAuthTest": {
+            "applicationId": "7U8eExenz96bfK1OPyklLJfWbHtYIU0DAIHlD6x5", 
+            "masterKey": "nW0ll3pEOztx7hiu2OXaLmDGQGFSU18xGsOoL9lX"
+        }, 
+        "_default": {
+            "link": "GithubAuthTest"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.2.9"
+    }
+}
