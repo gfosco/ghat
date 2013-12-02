@@ -1,5 +1,5 @@
 var user = Parse.User.current();
-if (user) {
+if (user && user.get('github_data')) {
 	window.location.href='/main';
 } else {
 	window.location.href='/authorize';

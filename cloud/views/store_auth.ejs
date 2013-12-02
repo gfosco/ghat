@@ -1,0 +1,41 @@
+<% include head %>
+
+  <div class="page">
+    <header class="action-bar fixed-top">
+      <a href="#" class="app-icon action">
+        <i class="icon-fries"></i>
+      </a>
+      <h1 class="title">Github Auth Test</h1>
+
+    </header>
+
+    <div class="content inset">
+      
+      <h1 class="intro">Github Authentication</h1>
+      <p>Saving your Github session...</p>
+
+    </div>
+  </div>
+
+<% include required_scripts %>
+  <script type="text/javascript">
+
+  var userId = '<%= userId %>';
+  var sessionToken = '<%= sessionToken %>';
+
+  var user = new Parse.User();
+  user.id = userId;
+  user.fetch({
+    success: function (user) {
+      user._sessionToken = sessionToken;
+      Parse.User._saveCurrentUser(user);
+      window.location.href='/main';
+    },
+    error: function (user, error) {
+      alert('Login with Github Failed.');
+      window.location.href='/';
+    }
+  });
+
+  </script>
+<% include foot %>
