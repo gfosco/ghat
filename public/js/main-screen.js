@@ -1,6 +1,6 @@
 var user = Parse.User.current();
 if (!user || !user.get('github_data')) {
-	window.location.href='/authorize';
+	window.location.href='/';
 } else {
 	var obj = user.get('github_data');
 	var out = '<ul class="list">' + 
