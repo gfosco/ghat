@@ -179,26 +179,35 @@ var upsertGHUser = function(access_token, jsdata) {
   query.equalTo('githubId', jsdata.id);
   // Check if this githubId has previously logged in
   query.first().then(function (obj) {
-  	// If so, fetch the user and return it.
-    var user = obj.get('user');
-    user.fetch().then(function (user) {
-  	  // Update the acces_token and github_data and save the object, resolving
-  	  //   the promise with the response data for the user.
-	  obj.set('access_token', access_token);
-	  user.set('github_data', jsdata);
-	  obj.save().then(function (obj) {
-	    promise.resolve(getUserResponse(user));
-	  }, function (error) { 
-	    promise.reject(error);
-	  });
-    }, function (nouserfound) {
-      // Create a new user and resolve the promise with the response.
-      newGHUser(access_token, jsdata).then(function (u) {
+	if (!obj) {
+	  	// If not, create a new user and return the user response.
+	    newGHUser(access_token, jsdata).then(function (u) {
         promise.resolve(u);
       }, function (e) {
         promise.reject(e);
       });
-    });
+	} else {
+	  	// If so, fetch the user and return it.
+	    var user = obj.get('user');
+	    user.fetch().then(function (user) {
+	  	  // Update the acces_token and github_data and save the object, resolving
+	  	  //   the promise with the response data for the user.
+		  obj.set('access_token', access_token);
+		  user.set('github_data', jsdata);
+		  return obj.save().then(function (obj) {
+		    promise.resolve(getUserResponse(user));
+		  }, function (error) { 
+		    promise.reject(error);
+		  });
+	    }, function (nouserfound) {
+	      // Create a new user and resolve the promise with the response.
+	      newGHUser(access_token, jsdata).then(function (u) {
+	        promise.resolve(u);
+	      }, function (e) {
+	        promise.reject(e);
+	      });
+	    });
+	}
   });
   return promise;
 }
